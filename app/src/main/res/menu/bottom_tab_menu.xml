@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/botTab_1" android:title="목록" android:icon="@drawable/icons8_menu_16"/>
+    <item android:id="@+id/botTab_2" android:title="작성" android:icon="@drawable/icons8_edit_16"/>
+    <item android:id="@+id/botTab_3" android:title="통계" android:icon="@drawable/icons8_document_16"/>
+</menu>
