@@ -1,14 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment2">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    tools:context=".Fragment2"
+    android:orientation="vertical"
+    android:padding="10dp">
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="fragment2" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="20dp">
+        <ImageView
+            android:id="@+id/frag2_weatherIcon"
+            android:src="@drawable/weather_icon_3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/frag2_date"
+            android:text="00월 00일"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"/>
+        <TextView
+            android:text="서울시 관악구 청룡동"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"/>
+    </LinearLayout>
+    <EditText
+        android:id="@+id/frag2_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:paddingVertical="15sp"
+        android:paddingHorizontal="5sp"
+        android:hint="내용을 입력해주세요."/>
+    <ImageView
+        android:id="@+id/frag2_iv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="250dp"
+        android:minHeight="250dp"
+        android:src="@drawable/imagetoset"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <SeekBar
+            android:id="@+id/frag2_seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="20dp"
+            android:max="4" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="50dp">
+            <ImageView
+                android:src="@drawable/smile1_48"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <ImageView
+                android:src="@drawable/smile2_48"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <ImageView
+                android:src="@drawable/smile3_48"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <ImageView
+                android:src="@drawable/smile4_48"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <ImageView
+                android:src="@drawable/smile5_48"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="20dp">
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/frag2_btn1"
+            android:text="저장"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/custom_btn1"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/frag2_btn2"
+            android:text="삭제"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/custom_btn1"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/frag2_btn3"
+            android:text="취소"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/custom_btn1"/>
+    </LinearLayout>
 
-</FrameLayout>
+</LinearLayout>
