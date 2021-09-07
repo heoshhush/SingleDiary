@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -16,10 +18,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.Provider;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import com.android.volley.Request;
@@ -56,8 +62,11 @@ public class MainActivity extends AppCompatActivity
     Location currentLocation;
     GPSListener gpsListener;
     String currentWeather;
+    String currentAddress;
 
-    String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION};
+    public static NoteDatabase mDatabase = null;
+
+    String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +103,32 @@ public class MainActivity extends AppCompatActivity
                 return true;
             }
         });
+
+        ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CODE);
+
+        openDatabase();
     }
+
+    public void openDatabase(){
+        if(mDatabase != null){
+            mDatabase.close();
+            mDatabase = null;
+        }
+
+        mDatabase = NoteDatabase.getInstance(this);
+        boolean isOpen = mDatabase.open();
+    }
+
+    public void setPicturePath() {
+        String folderPath = getFilesDir().getAbsolutePath();
+        AppConstants.FOLDER_PHOTO = folderPath + File.separator + "photo";
+
+        File photoFolder = new File(AppConstants.FOLDER_PHOTO);
+        if (!photoFolder.exists()) {
+            photoFolder.mkdirs();
+        }
+    }
+
 
     @Override
     public void onTabSelected(int position) {
@@ -271,6 +305,27 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void getCurrentAddress(){
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> addresses = null;
+
+        try {
+            addresses = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if(addresses != null && addresses.size() > 0){
+            Address address = addresses.get(0);
+            String addressLocality = address.getLocality() != null ? address.getLocality() : " ";
+            currentAddress = addressLocality + " " + address.getSubLocality();
+            String adminArea = address.getAdminArea();
+            String country = address.getCountryName();
+            println("Address : " + country + " " + adminArea + " " + currentAddress);
+
+            if(fragment2 != null){
+                fragment2.setAddress(currentAddress);
+            }
+        }
 
     }
 

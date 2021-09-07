@@ -218,7 +218,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.Holder> {
         return itemList.get(position);
     }
 
-
+    public void setItems(ArrayList<Note> items){
+        itemList = items;
+    }
 
 
 }

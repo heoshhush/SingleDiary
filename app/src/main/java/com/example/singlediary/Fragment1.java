@@ -1,6 +1,7 @@
 package com.example.singlediary;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+
+import java.text.ParseException;
+import java.util.Date;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +22,16 @@ import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
+
 
 public class Fragment1 extends Fragment {
+    private static final String TAG = "Fragment1";
 
     RecyclerView recyclerView;
     RadioGroup radioGroup;
     Context context;
-
+    NoteAdapter noteAdapter;
     OnTabItemSelectedListener onTabItemSelectedListener;
 
     @Override
@@ -43,7 +50,7 @@ public class Fragment1 extends Fragment {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_1, container, false);
 
 
-        NoteAdapter noteAdapter = new NoteAdapter();
+        noteAdapter = new NoteAdapter();
         noteAdapter.addItem(new Note(1, "0", "관악구 청룡동", "", "", "오늘은 일기장을 만들었다", "1", null, "8월 31일"));
         noteAdapter.addItem(new Note(2, "2", "관악구 청룡동", "", "", "머라노", "3", null, "2월 12일"));
         noteAdapter.addItem(new Note(3, "3", "관악구 청룡동", "", "", "ㅎㅇㅎㅇ", "4", null, "3월 20일"));
@@ -87,8 +94,56 @@ public class Fragment1 extends Fragment {
             }
         });
 
+        loadNoteListData();
+
         return view;
     }
 
+
+    public int loadNoteListData(){
+        String sql = "select _id, weather, address, location_x, " +
+                "location_y, contents, mood, picture, create_date, " +
+                "modify_date from " + NoteDatabase.TABLE_NOTE +
+                " order by create_date desc";
+
+        int recordCount = -1;
+        NoteDatabase database = NoteDatabase.getInstance(context);
+        if(database != null){
+            Cursor outCursor = database.rawQuery(sql);
+
+            recordCount = outCursor.getCount();
+            ArrayList<Note> items = new ArrayList<Note>();
+            while(outCursor.moveToNext()){
+                int _id = outCursor.getInt(0);
+                String weather = outCursor.getString(1);
+                String address = outCursor.getString(2);
+                String locationX = outCursor.getString(3);
+                String locationY = outCursor.getString(4);
+                String contents = outCursor.getString(5);
+                String mood = outCursor.getString(6);
+                String picture = outCursor.getString(7);
+                String dateStr = outCursor.getString(8);
+                String createDateStr = null;
+                if(dateStr != null && dateStr.length() > 10){
+                    try {
+                        Date inDate = AppConstants.dateFormat4.parse(dateStr);
+                        createDateStr = AppConstants.dateFormat3.format(inDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    createDateStr = "";
+                }
+                items.add(new Note(_id, weather, address, locationX, locationY,
+                        contents, mood, picture, createDateStr));
+            }
+
+            outCursor.close();
+            noteAdapter.setItems(items);
+            noteAdapter.notifyDataSetChanged();
+        }
+
+        return recordCount;
+    }
 
 }
